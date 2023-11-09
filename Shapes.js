@@ -71,6 +71,7 @@ class Shapes {
   // who knew rotating a damn block would be so hard.
   rotateShape() {
     let futurePositions = [];
+    let newPositions = [];
     let notCollide = true;
     for (let i = 0; i < this.blocks.length; i++) {
       let startingPos = this.shape.blockPositions[i];
@@ -78,7 +79,7 @@ class Shapes {
       let relativePoint = p5.Vector.sub(startingPos, rotationPoint);
       let rotatedPoint = relativePoint.rotate(Math.PI / 2);
       let newPosition = p5.Vector.add(rotationPoint, rotatedPoint);
-      this.shape.blockPositions[i] = newPosition;
+      newPositions.push(newPosition);
       futurePositions.push(p5.Vector.add(this.currentPos, newPosition));
     }
 
@@ -91,6 +92,7 @@ class Shapes {
 
     if (notCollide) {
       for (let i = 0; i < this.blocks.length; i++) {
+        this.shape.blockPositions[i] = newPositions[i];
         this.blocks[i].currentPos = futurePositions[i];
       }
     }

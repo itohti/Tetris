@@ -46,6 +46,14 @@ class Block {
         console.log("hit bottom!");
       return true;
     }
+    if (position.x < game.grid[0][0].pos.x){
+      console.log("hit edge");
+      return true;
+    }
+    else if (position.x > game.grid[0][9].pos.x){
+      console.log("hit edge");
+      return true;
+    }
     return false;
   }
 }

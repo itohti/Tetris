@@ -26,7 +26,6 @@ function elapseTime() {
 }
 
 function keyPressed() {
-  game.updateGrid();
   if (keyCode == TOP_ARROW) {
     currentShape.rotateShape();
   } else if (keyCode == LEFT_ARROW) {
@@ -36,12 +35,14 @@ function keyPressed() {
   } else if (keyCode == DOWN_ARROW) {
     currentShape.moveDown();
   }
-
+  game.updateGrid();
   console.log(keyCode);
 }
 
 function draw() {
   game.updateGrid();
+  game.printGrid();
+  console.log("---------------");
   background(220);
   for (let i = 0; i < game.grid.length; i++) {
     for (let j = 0; j < game.grid[i].length; j++) {
@@ -51,8 +52,6 @@ function draw() {
   currentShape.draw();
   if (timer != prevTimer) {
     currentShape.moveDown();
-    game.printGrid();
-    console.log("---------------");
     prevTimer = timer;
   }
 }
