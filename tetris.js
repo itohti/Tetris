@@ -6,7 +6,7 @@ function setup() {
   setShapes();
   testShape = new Shapes(S, createVector(20, 1));
 }
-
+// testing
 function draw() {
   background(220);
   testShape.draw();
