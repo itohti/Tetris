@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/itohti/Tetris/issues"
   },
-  "homepage": "https://github.com/itohti/Tetris#readme"
+  "homepage": "https://github.com/itohti/Tetris#readme",
+  "dependencies": {
+    "p5": "^1.8.0"
+  }
 }
