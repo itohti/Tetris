@@ -14,7 +14,15 @@ class Block {
     rect(position.x * BLOCK_SIZE, position.y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
   }
 
+  moveLeft(){
+    this.currentPos.x -= 1;
+  }
+
+  moveRight(){
+    this.currentPos.x += 1;
+  }
+
   moveDown() {
-    this.currentPos.y += BLOCK_SIZE;
+    this.currentPos.y += 1;
   }
 }
