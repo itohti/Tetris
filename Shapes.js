@@ -8,40 +8,70 @@ class Shapes {
     }
   }
 
+  getPositions() {
+    let positions = [];
+    for (var block of this.blocks) {
+      positions.push(block.currentPos);
+    }
+    return positions;
+  }
+
   draw() {
     for (var block of this.blocks) {
       block.draw();
     }
   }
 
-  moveLeft(){
-    for (var block of this.blocks){
-      block.moveLeft();
+  canMoveTo(dirX, dirY) {
+    let noCollision = true;
+    for (var block of this.blocks) {
+      let futurePosition = createVector(
+        block.currentPos.x + dirX,
+        block.currentPos.y + dirY
+      );
+      if (block.checkCollision(futurePosition)) {
+        if (dirY == 1){
+            game.mergeBlock();
+            currentShape = game.dequeue();
+            game.queue(game.getRandomShape());
+        }
+        noCollision = false;
+      }
     }
-    this.currentPos.x -= 1;
+    return noCollision;
   }
 
-  moveRight(){
-    for (var block of this.blocks){
-      block.moveRight();
+  moveLeft() {
+    if (this.canMoveTo(-1, 0)) {
+      for (var block of this.blocks) {
+        block.moveLeft();
+      }
+      this.currentPos.x -= 1;
     }
-    this.currentPos.x += 1;
+  }
+
+  moveRight() {
+    if (this.canMoveTo(1, 0)) {
+      for (var block of this.blocks) {
+        block.moveRight();
+      }
+      this.currentPos.x += 1;
+    }
   }
 
   moveDown() {
-    if (this.currentPos.y == grid[19][0].pos.y){
-      return; // DOES NOT DROP INTO THE VOID HUGGGEEEEEE!!!! Come back to this you need to figure out collision logic.
-    }
-    console.log("GRID ROW " + grid[19][0].pos);
-    this.currentPos.y += 1;
-    console.log("UPDATE " + this.currentPos);
-    for (var block of this.blocks) {
-      block.moveDown();
+    if (this.canMoveTo(0, 1)) {
+      for (var block of this.blocks) {
+        block.moveDown();
+      }
+      this.currentPos.y += 1;
     }
   }
   // WHAT THE HELL IS HAPPENNNNNNINNNNGGGGGGG AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH YESSSSSSSSS YESSSSS
   // who knew rotating a damn block would be so hard.
   rotateShape() {
+    let futurePositions = [];
+    let notCollide = true;
     for (let i = 0; i < this.blocks.length; i++) {
       let startingPos = this.shape.blockPositions[i];
       let rotationPoint = this.shape.rotationPoint;
@@ -49,7 +79,20 @@ class Shapes {
       let rotatedPoint = relativePoint.rotate(Math.PI / 2);
       let newPosition = p5.Vector.add(rotationPoint, rotatedPoint);
       this.shape.blockPositions[i] = newPosition;
-      this.blocks[i].currentPos = p5.Vector.add(this.currentPos, newPosition);
+      futurePositions.push(p5.Vector.add(this.currentPos, newPosition));
+    }
+
+    // checks if the rotation will collide with anything.
+    for (let i = 0; i < futurePositions.length; i++) {
+      if (this.blocks[i].checkCollision(futurePositions[i])) {
+        notCollide = false;
+      }
+    }
+
+    if (notCollide) {
+      for (let i = 0; i < this.blocks.length; i++) {
+        this.blocks[i].currentPos = futurePositions[i];
+      }
     }
   }
 }

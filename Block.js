@@ -11,18 +11,41 @@ class Block {
     fill(this.color);
     stroke(0);
     strokeWeight(3);
-    rect(position.x * BLOCK_SIZE, position.y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+    rect(
+      position.x * BLOCK_SIZE,
+      position.y * BLOCK_SIZE,
+      BLOCK_SIZE,
+      BLOCK_SIZE
+    );
   }
 
-  moveLeft(){
+  moveLeft() {
     this.currentPos.x -= 1;
   }
 
-  moveRight(){
+  moveRight() {
     this.currentPos.x += 1;
   }
 
   moveDown() {
     this.currentPos.y += 1;
+  }
+
+  checkCollision(position) {
+    for (var row of game.grid) {
+      for (var cell of row) {
+        if (cell.isPlaced) {
+          if (position.x == cell.pos.x && position.y == cell.pos.y) {
+            console.log("hit other piece!");
+            return true;
+          }
+        }
+      }
+    }
+    if (position.y > game.grid[19][0].pos.y) {
+        console.log("hit bottom!");
+      return true;
+    }
+    return false;
   }
 }

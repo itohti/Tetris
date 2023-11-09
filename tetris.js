@@ -1,5 +1,5 @@
-let testShape;
-let grid;
+let game;
+let currentShape;
 var canvasWidth = 800;
 var canvasHeight = 800;
 var timer;
@@ -7,42 +7,18 @@ var prevTimer;
 const TOP_ARROW = 38;
 const LEFT_ARROW = 37;
 const RIGHT_ARROW = 39;
+const DOWN_ARROW = 40;
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
   timer = 0;
   prevTimer = timer;
-  grid = [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-  ];
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < 10; j++) {
-      let cell = new Cell(createVector(j + 15, i));
-
-      grid[i].push(cell);
-    }
-  }
   setShapes();
-  testShape = new Shapes(T, createVector(18, 0));
-  setInterval(elapseTime, 1000);
+  game = new GameManager(square, L, reverseL, S, reverseL, T, tetrisGodPiece);
+  game.fillGrid();
+  game.fillShapes();
+  currentShape = game.dequeue();
+  game.queue(game.getRandomShape());
+  setInterval(elapseTime, 500);
 }
 
 function elapseTime() {
@@ -50,27 +26,33 @@ function elapseTime() {
 }
 
 function keyPressed() {
+  game.updateGrid();
   if (keyCode == TOP_ARROW) {
-    testShape.rotateShape();
+    currentShape.rotateShape();
   } else if (keyCode == LEFT_ARROW) {
-    testShape.moveLeft();
+    currentShape.moveLeft();
   } else if (keyCode == RIGHT_ARROW) {
-    testShape.moveRight();
+    currentShape.moveRight();
+  } else if (keyCode == DOWN_ARROW) {
+    currentShape.moveDown();
   }
 
   console.log(keyCode);
 }
 
 function draw() {
+  game.updateGrid();
   background(220);
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      grid[i][j].draw();
+  for (let i = 0; i < game.grid.length; i++) {
+    for (let j = 0; j < game.grid[i].length; j++) {
+      game.grid[i][j].draw();
     }
   }
-  testShape.draw();
+  currentShape.draw();
   if (timer != prevTimer) {
-    testShape.moveDown();
+    currentShape.moveDown();
+    game.printGrid();
+    console.log("---------------");
     prevTimer = timer;
   }
 }
