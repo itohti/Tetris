@@ -13,7 +13,7 @@ function setup() {
   timer = 0;
   prevTimer = timer;
   setShapes();
-  game = new GameManager(square, L, reverseL, S, reverseL, T, tetrisGodPiece);
+  game = new GameManager(square, L, reverseL, S, reverseS, T, tetrisGodPiece);
   game.fillGrid();
   game.fillShapes();
   currentShape = game.dequeue();

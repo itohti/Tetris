@@ -32,7 +32,6 @@ class Shapes {
       if (block.checkCollision(futurePosition)) {
         if (dirY == 1){
             game.mergeBlock();
-            setShapes();
             currentShape = game.dequeue();
             game.queue(game.getRandomShape());
         }
