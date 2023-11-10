@@ -36,22 +36,18 @@ class Block {
       for (var cell of row) {
         if (cell.isPlaced) {
           if (position.x == cell.pos.x && position.y == cell.pos.y) {
-            console.log("hit other piece!");
             return true;
           }
         }
       }
     }
     if (position.y > game.grid[19][0].pos.y) {
-        console.log("hit bottom!");
       return true;
     }
     if (position.x < game.grid[0][0].pos.x){
-      console.log("hit edge");
       return true;
     }
     else if (position.x > game.grid[0][9].pos.x){
-      console.log("hit edge");
       return true;
     }
     return false;
